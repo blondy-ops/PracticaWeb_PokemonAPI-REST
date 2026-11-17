@@ -1,5 +1,6 @@
 package com.example.PokemonApi.service;
 
+import com.example.PokemonApi.excepciones.ResourceNotFoundException;
 import com.example.PokemonApi.model.Pokemon;
 import com.example.PokemonApi.repository.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class PokemonService {
 
     // Obtener Pokémon por ID
     public Pokemon obtenerPorId(Long id) {
-        return pokemonRepository.findById(id).orElse(null);
+        return pokemonRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encontro el pokemon"));
     }
 
     // Crear un Pokémon
@@ -45,8 +46,10 @@ public class PokemonService {
             pokemon.setDescripcion(pokemonActualizado.getDescripcion());
             pokemon.setImagenUrl(pokemonActualizado.getImagenUrl());
 
+            pokemon.setFechaCaptura(pokemonActualizado.getFechaCaptura());
+
             return pokemonRepository.save(pokemon);
-        }).orElse(null);
+        }).orElseThrow(() -> new ResourceNotFoundException("No se pudo actualizar el pokemon"));
     }
 
     // Actualizar parcialmente (PATCH)
@@ -76,8 +79,11 @@ public class PokemonService {
             if (pokemonParcial.getImagenUrl() != null)
                 pokemon.setImagenUrl(pokemonParcial.getImagenUrl());
 
+            if(pokemonParcial.getFechaCaptura() != null)
+                pokemon.setFechaCaptura((pokemonParcial.getFechaCaptura()));
+
             return pokemonRepository.save(pokemon);
-        }).orElse(null);
+        }).orElseThrow(() -> new ResourceNotFoundException("No se puudo actualizar el pokemon"));
     }
 
     // Eliminar un Pokémon

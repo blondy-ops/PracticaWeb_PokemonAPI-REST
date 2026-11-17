@@ -3,6 +3,7 @@ package com.example.PokemonApi.controller;
 import com.example.PokemonApi.model.Pokemon;
 import com.example.PokemonApi.service.PokemonService;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,13 +34,14 @@ public class PokemonController {
 
     // Crear un Pokémon
     @PostMapping
-    public Pokemon crearPokemon(@RequestBody Pokemon pokemon) {
+    public Pokemon crearPokemon(@Valid @RequestBody Pokemon pokemon) {
         return pokemonService.crearPokemon(pokemon);
     }
 
     // Actualizar completamente un Pokémon
     @PutMapping("/{id}")
     public Pokemon actualizarCompleto(
+            @Valid
             @PathVariable Long id,
             @RequestBody Pokemon pokemon) {
 
